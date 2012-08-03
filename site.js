@@ -39,17 +39,22 @@ clear.append('text')
 clear.on('click', function() { d = []; draw(); });
 
 function draw() {
-    var clusters = kmeans(d, 8,
-        function(a, b) {
-            return Math.sqrt(
-                Math.pow(a[0] - b[0], 2) +
-                Math.pow(a[1] - b[1], 2));
-        },
-        function(pts) {
-            return [
-                ss.mean(pts.map(function(x) { return x[0]; })),
-                ss.mean(pts.map(function(x) { return x[1]; }))];
-        });
+    var clusters;
+    if (d.length > 8) {
+        clusters = kmeans(d, 8,
+            function(a, b) {
+                return Math.sqrt(
+                    Math.pow(a[0] - b[0], 2) +
+                    Math.pow(a[1] - b[1], 2));
+            },
+            function(pts) {
+                return [
+                    ss.mean(pts.map(function(x) { return x[0]; })),
+                    ss.mean(pts.map(function(x) { return x[1]; }))];
+            });
+    } else {
+        clusters = [];
+    }
 
     var clusterdots = clustersg.selectAll('circle.clusterdot')
         .data(clusters.map(function(x) { return x.val; }), function(k, i) {
