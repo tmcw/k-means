@@ -52,7 +52,9 @@ function draw() {
         });
 
     var clusterdots = clustersg.selectAll('circle.clusterdot')
-        .data(clusters.map(function(x) { return x.val; }));
+        .data(clusters.map(function(x) { return x.val; }), function(k, i) {
+            return i;
+        });
 
     var dots = dotsg.selectAll('circle.dot')
         .data(d);
@@ -60,7 +62,7 @@ function draw() {
     dots.enter()
         .append('circle')
         .attr('class', 'dot')
-        .attr('r', 4)
+        .attr('r', 2)
         .attr('cx', function(d) { return d[0]; })
         .attr('cy', function(d) { return d[1]; });
 
@@ -69,10 +71,12 @@ function draw() {
     clusterdots.enter()
         .append('circle')
         .attr('class', 'clusterdot')
-        .attr('r', 4)
+        .attr('r', 8)
         .attr('cx', function(d) { return d[0]; })
         .attr('cy', function(d) { return d[1]; });
+
     clusterdots
+        .transition()
         .attr('cx', function(d) { return d[0]; })
         .attr('cy', function(d) { return d[1]; });
 
