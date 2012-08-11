@@ -53,3 +53,7 @@ function kmeans(x, n, distance, average) {
 
     return newvals;
 }
+
+if (typeof module !== 'undefined') {
+    module.exports = kmeans;
+}
