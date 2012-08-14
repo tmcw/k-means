@@ -16,6 +16,12 @@
     "clustering",
     "math"
   ],
+  "devDependencies": {
+    "mocha": "1.2.x"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
   "author": "Tom MacWright",
   "license": "BSD"
 }

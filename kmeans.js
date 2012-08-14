@@ -1,3 +1,15 @@
+function choose_means(x, n) {
+    var means = [];
+    while (means.length < n) {
+        var idx = ~~(Math.random() * (x.length));
+        if (!seen[idx]) {
+            means.push({ val: x[idx], vals: [] });
+            seen[idx] = true;
+        }
+    }
+    return means;
+}
+
 function kmeans(x, n, distance, average) {
 
     // n is the number of means to choose.
@@ -55,5 +67,8 @@ function kmeans(x, n, distance, average) {
 }
 
 if (typeof module !== 'undefined') {
-    module.exports = kmeans;
+    module.exports = {
+        choose_means: choose_means,
+        kmeans: kmeans
+    };
 }
