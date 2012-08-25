@@ -2,7 +2,7 @@ var Canvas = require('canvas'),
     kmeans = require('../'),
     fs = require('fs');
 
-var w = 640 * 2, h = 50 * 2;
+var w = 640 * 2, h = 100 * 2;
 var m = 50;
 var c = new Canvas(w, h);
 var ctx = c.getContext('2d');
@@ -30,13 +30,13 @@ function dot(x, y, t, c) {
     ctx.arc(x, y, 30, 0, Math.PI*2, true);
     ctx.closePath();
     ctx.fill();
-    ctx.fillStyle = c || '#fff';
+    ctx.fillStyle = '#fff';
     ctx.fillText(t, x, y + 10);
 }
 
 function connect(x0, y0, x1, y1, c) {
     console.log(c);
-    ctx.strokeStyle = c || '#1e91de';
+    ctx.strokeStyle = c || '#f20c23';
     ctx.lineWidth = 10;
     ctx.beginPath();
     ctx.moveTo(x0, y0);
@@ -46,22 +46,22 @@ function connect(x0, y0, x1, y1, c) {
 }
 
 axis(50);
-// axis(150);
+axis(150);
 
 var data = [0, 1, 4, 5, 7, 9, 10];
 
-// data.forEach(function(d) {
-//     connect(sx(d), 50, sx(d), 150);
-// });
-
 data.forEach(function(d) {
-    dot(sx(d), 50, d);
+    connect(sx(d), 50, sx(d), 150, '#F07B87');
 });
 
-// data.forEach(function(d) {
-//     dot(sx(d), 150, d);
-// });
+data.forEach(function(d) {
+    dot(sx(d), 50, d, '#F07B87');
+});
+
+data.forEach(function(d) {
+    dot(sx(d), 150, d);
+});
 
 c.toBuffer(function(err, buf) {
-    fs.writeFileSync('graphic.png', buf);
+    fs.writeFileSync('kmeans-same.png', buf);
 });
