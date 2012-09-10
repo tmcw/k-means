@@ -1,18 +1,28 @@
-function choose_means(x, n) {
-    // n is the number of means to choose.
-
-    // the number of means cannot be higher
-    // than the arity of the dataset
-    if (n > x.length) return null;
-    var means = [];
-    while (means.length < n) {
-        var idx = ~~(Math.random() * (x.length));
-        if (!seen[idx]) {
-            means.push({ val: x[idx], vals: [] });
-            seen[idx] = true;
-        }
+function sample(list, m) {
+    var n = list.length;
+    if (m > n) return void console &&
+        console.log('list length must be > sample');
+    var sampleList = [];
+    for (var i = n - m; i < n; i++) {
+        var item = list[~~(Math.random() * i)];
+        if (sampleList.indexOf(item) !== -1)
+            sampleList.push(list[i]);
+        else
+            sampleList.push(item);
     }
-    return means;
+    return sampleList;
+}
+
+function dist1d(a, b) {
+    return Math.abs(a - b);
+}
+
+function dist(a, b) {
+    var d = 0;
+    for (var i = 0; i < a.length; i++) {
+      d += Math.pow(a[i] - b[i], 2);
+    }
+    return Math.sqrt(d);
 }
 
 function means_clusters(x, means, distance) {
@@ -45,7 +55,9 @@ function kmeans(x, n, distance, average) {
 
 if (typeof module !== 'undefined') {
     module.exports = {
-        choose_means: choose_means,
+        sample: sample,
+        dist1d: dist1d,
+        dist: dist,
         means_clusters: means_clusters,
         clusters_means: clusters_means,
         kmeans: kmeans

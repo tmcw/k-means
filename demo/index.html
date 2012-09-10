@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="http://d3js.org/d3.v2.js"></script>
+        <script src="d3.v2.js"></script>
         <script src="floyd.js"></script>
         <script src="kmeans.js"></script>
         <style>
             body { margin: 0; padding: 0; font:normal 12px/20px sans-serif; }
             #vis { width: 640px; }
+            rect.title {
+                fill:#eee;
+            }
+            rect.stage {
+                fill:#ccc;
+            }
             circle.control {
                 fill: #d23634;
             }
@@ -14,6 +20,7 @@
                 fill:#006EB8;
             }
             text.controltext {
+                fill:#fff;
                 text-anchor:middle;
             }
         </style>

@@ -12,3 +12,7 @@ function sample(list, m) {
     }
     return sampleList;
 }
+
+if (typeof module !== 'undefined') {
+    module.exports = sample;
+}
