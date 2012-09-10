@@ -24,7 +24,23 @@ describe('kmeans', function() {
     it('can get the distance between two simple points', function() {
         assert.equal(kmeans.dist([0, 0], [0, 0]), 0);
         assert.equal(kmeans.dist([0, 0], [0, 1]), 1);
+
         // pythagorean triple
         assert.equal(kmeans.dist([3, 4], [0, 0]), 5);
+    });
+
+    it('can make mean groups from means', function() {
+        var more_means = kmeans.means_clusters([3], [3, 4]);
+        assert.equal(more_means.length, 1);
+        assert.equal(more_means[0].val, 3);
+
+        var more_x = kmeans.means_clusters([3, 4], [3]);
+        assert.equal(more_x.length, 1);
+        assert.equal(more_x[0].group.length, 2);
+
+        var id_x = kmeans.means_clusters([3, 4], [3, 4]);
+        assert.equal(id_x.length, 2);
+        assert.equal(id_x[0].group.length, 1);
+        assert.equal(id_x[1].group.length, 1);
     });
 });

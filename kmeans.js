@@ -5,10 +5,11 @@ function sample(list, m) {
     var sampleList = [];
     for (var i = n - m; i < n; i++) {
         var item = list[~~(Math.random() * i)];
-        if (sampleList.indexOf(item) !== -1)
+        if (sampleList.indexOf(item) !== -1) {
             sampleList.push(list[i]);
-        else
+        } else {
             sampleList.push(item);
+        }
     }
     return sampleList;
 }
@@ -20,22 +21,38 @@ function dist1d(a, b) {
 function dist(a, b) {
     var d = 0;
     for (var i = 0; i < a.length; i++) {
-      d += Math.pow(a[i] - b[i], 2);
+        d += Math.pow(a[i] - b[i], 2);
     }
     return Math.sqrt(d);
 }
 
-function means_clusters(x, means, distance) {
+function identity(x) {
+    return x;
+}
+
+function means_clusters(x, means, distance, val) {
+    if (!val) val = identity;
+    if (!distance) distance = dist1d;
     // For every value, find the closest mean and add that value to the
     // mean's `vals` array.
-    for (i = 0; i < x.length; i++) {
+    var groups = {};
+    for (var i = 0; i < x.length; i++) {
         var dists = [];
         for (var j = 0; j < means.length; j++) {
-            dists.push(distance(x[i], means[j].val));
+            dists.push(distance(val(x[i]), val(means[j])));
         }
         var closest_index = dists.indexOf(Math.min.apply(null, dists));
-        means[closest_index].vals.push(x[i]);
+        if (!groups[closest_index]) groups[closest_index] = [];
+        groups[closest_index].push(x[i]);
     }
+    var out = [];
+    for (var idx in groups) {
+        out.push({
+            val: x[idx],
+            group: groups[idx]
+        });
+    }
+    return out;
 }
 
 function clusters_means(clusters) {
