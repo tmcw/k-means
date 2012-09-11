@@ -18,6 +18,14 @@ function dist1d(a, b) {
     return Math.abs(a - b);
 }
 
+function average1d(n, val) {
+    var s = 0;
+    for (var i = 0; i < n.length; i++) {
+        s += val(n[i]);
+    }
+    return s / n.length;
+}
+
 function dist(a, b) {
     var d = 0;
     for (var i = 0; i < a.length; i++) {
@@ -47,23 +55,20 @@ function means_clusters(x, means, distance, val) {
     }
     var out = [];
     for (var idx in groups) {
-        out.push({
-            val: x[idx],
-            group: groups[idx]
-        });
+        out.push(groups[idx]);
     }
     return out;
 }
 
-function clusters_means(clusters) {
-    var newvals = [];
-    for (i = 0; i < means.length; i++) {
-        var centroid = average(means[i].vals);
-        newvals.push({
-            val: centroid,
-            vals: []
-        });
+function clusters_means(clusters, average, val) {
+    if (!average) average = average1d;
+    if (!val) val = identity;
+    var newmeans = [];
+    for (i = 0; i < clusters.length; i++) {
+        var centroid = average(clusters[i], val);
+        newmeans.push(centroid);
     }
+    return newmeans;
 }
 
 function kmeans(x, n, distance, average) {

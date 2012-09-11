@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>k-means in one dimension</title>
         <script src="d3.v2.js"></script>
         <script src="floyd.js"></script>
-        <script src="kmeans.js"></script>
+        <script src="../kmeans.js"></script>
         <style>
             body { margin: 0; padding: 0; font:normal 12px/20px sans-serif; }
             #vis { width: 640px; }
             rect.title {
-                fill:#eee;
+                fill:#fff;
             }
             rect.stage {
                 fill:#ccc;
             }
+            rect.closest {
+                fill:#A0D1F2;
+            }
             circle.control {
                 fill: #d23634;
             }
-            circle.control.chosen {
+            circle.mean {
                 fill:#006EB8;
             }
             text.controltext {

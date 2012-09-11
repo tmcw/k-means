@@ -4,24 +4,28 @@ var w = 600,
     t = 0.5,
     delta = 0.01,
     padding = 40,
-    points = [0, 2, 3, 4, 5, 10, 18, 16, 20].map(function(x) { return { x: x, chosen: false }; }),
+    points = [0, 2, 3, 4, 5, 10, 18, 16, 20],
     n = 3;
 
-var choose = sample(points, 4);
-for (var i = 0; i < choose.length; i++) choose[i].chosen = true;
+var means = sample(points, 4);
 var xs = d3.scale.linear()
   .range([0, w - padding])
   .domain([0, 20])
   .clamp(true);
 
-function x(_) { return xs(_.x); }
+function x(_) { return xs(_); }
 
 var svg = d3.select('#vis').append('svg')
   .attr('width', w + 2 * padding)
   .attr('height', h + 2 * padding);
 
 var steps = svg.selectAll('g')
-  .data(['input data', 'random choices for cluster centers', 'all points closest to mean choices', 'new means'])
+  .data(['input data',
+        'means',
+        'all points closest to mean choices',
+        'new means',
+        'all points closest to new means',
+        'new means'])
   .enter()
   .append('g')
   .attr('class', 'step')
@@ -45,6 +49,36 @@ steps.append('text')
     .text(function(d) { return d; })
     .attr('dy', -15);
 
+var clusters1 = means_clusters(points, means, dist1d, function(d) { return d; });
+var means2 = clusters_means(clusters1, average1d, function(d) { return d; });
+var clusters2 = means_clusters(points, means2, dist1d, function(d) { return d; });
+var means3 = clusters_means(clusters2, average1d, function(d) { return d; });
+
+var c = steps.selectAll('g.closest')
+  .data(function(d, i, v) {
+      if (i == 1 || i == 2) {
+          return clusters1;
+      } else if (i == 3 || i == 4) {
+          return clusters2;
+      } else {
+          return [];
+      }
+  })
+  .enter()
+  .append('g').attr('class', 'closest');
+
+c.append('rect')
+   .attr('x', function(d) {
+       return xs(d3.min(d, function(x) { return x; }));
+   })
+   .attr('class', 'closest')
+   .attr('height', 20)
+   .attr('y', -10)
+   .attr('width', function(d) {
+       return xs((d3.max(d, function(x) { return x; }) -
+         d3.min(d, function(x) { return x; })));
+   });
+
 var p = steps.selectAll('g.points')
   .data(points)
   .enter()
@@ -55,34 +89,37 @@ p.attr('transform', function(d) {
   });
 
 p.append('circle')
-  .attr('class', 'control')
   .attr('r', 10)
-  .attr('class', function(d, i, v) {
-      return (d.chosen && v > 0) ? 'control chosen' : 'control';
-  });
+  .attr('class', 'control');
 
 p.append('text')
   .attr('class', 'controltext')
   .attr('dx', '0px')
   .attr('dy', '4px')
-  .text(function(d, i) { return d.x; });
+  .text(function(d, i) { return d; });
 
-
-var c = steps.selectAll('g.closest')
+var m = steps.selectAll('g.means')
   .data(function(d, i, v) {
-      if (i > 1) {
-          return means_clusters(points, points.filter(function(x) {
-              return x.chosen;
-          }), distance1d, function(d) { return d.x; });
+      if (i == 1 || i == 2) {
+          return means;
+      } else if (i == 3 || i == 4) {
+          return means2;
+      } else if (i == 5) {
+          return means3;
       } else {
           return [];
       }
   })
   .enter()
-  .append('g').attr('class', 'closest');
+  .append('g').attr('class', 'mean');
 
-c.append('rect')
-   .attr('x', function(d) { console.log(d); });
+m.attr('transform', function(d) {
+    return 'translate(' + x(d) + ', 15)';
+  });
+
+m.append('circle')
+  .attr('r', 5)
+  .attr('class', 'mean');
 
 function drawrow(vis, points) {
   var point = vis.selectAll('g.point')
@@ -96,5 +133,5 @@ function drawrow(vis, points) {
   point.append('text')
     .attr('class', 'controltext')
     .attr('dy', '4px')
-    .text(function(d, i) { return d.x; });
+    .text(function(d, i) { return d; });
 }
