@@ -12,6 +12,7 @@ var svg = d3.select('#vis').append('svg')
   .attr('width', w + 2 * padding)
   .attr('height', h + 2 * padding);
 
+
 var points = [0, 2, 3, 4, 5, 10, 18, 16, 20];
 var means = sample(points, 4);
 var clusters1 = means_clusters(points, means, dist1d, function(d) { return d; });
@@ -62,36 +63,7 @@ var closest_areas = c.append('rect')
     .attr('height', 20)
     .attr('y', -10);
 
-function update() {
 
-    means = sample(points, 4);
-    clusters1 = means_clusters(points, means, dist1d, function(d) { return d; });
-    means2 = clusters_means(clusters1, average1d, function(d) { return d; });
-    clusters2 = means_clusters(points, means2, dist1d, function(d) { return d; });
-    means3 = clusters_means(clusters2, average1d, function(d) { return d; });
-
-    closest_areas.data(closest_d);
-    closest_areas
-        .transition()
-        .attr('x', function(d) {
-            return x(d3.min(d, function(x) { return x; }));
-        })
-        .attr('width', function(d) {
-            return x((d3.max(d, function(x) { return x; }) -
-              d3.min(d, function(x) { return x; })));
-        });
-
-    p.data(points);
-    p.attr('transform', function(d) {
-        return 'translate(' + x(d) + ', 0)';
-    });
-    controltext.text(function(d, i) { return d; });
-    m.data(means_d)
-    .transition()
-    .attr('transform', function(d) {
-        return 'translate(' + x(d) + ', 15)';
-    });
-}
 
 var p = steps.selectAll('g.points')
   .data(points)
@@ -139,5 +111,35 @@ var m = steps.selectAll('g.means')
 m.append('circle')
   .attr('r', 5)
   .attr('class', 'mean');
+
+function update() {
+    means = sample(points, 4);
+    clusters1 = means_clusters(points, means, dist1d, function(d) { return d; });
+    means2 = clusters_means(clusters1, average1d, function(d) { return d; });
+    clusters2 = means_clusters(points, means2, dist1d, function(d) { return d; });
+    means3 = clusters_means(clusters2, average1d, function(d) { return d; });
+
+    closest_areas.data(closest_d);
+    closest_areas
+        .transition()
+        .attr('x', function(d) {
+            return x(d3.min(d, function(x) { return x; }));
+        })
+        .attr('width', function(d) {
+            return x((d3.max(d, function(x) { return x; }) -
+              d3.min(d, function(x) { return x; })));
+        });
+
+    p.data(points);
+    p.attr('transform', function(d) {
+        return 'translate(' + x(d) + ', 0)';
+    });
+    controltext.text(function(d, i) { return d; });
+    m.data(means_d)
+    .transition()
+    .attr('transform', function(d) {
+        return 'translate(' + x(d) + ', 15)';
+    });
+}
 
 update();
