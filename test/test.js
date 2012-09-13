@@ -32,15 +32,23 @@ describe('kmeans', function() {
     it('can make mean groups from means', function() {
         var more_means = kmeans.means_clusters([3], [3, 4]);
         assert.equal(more_means.length, 1);
-        assert.equal(more_means[0].val, 3);
-
-        var more_x = kmeans.means_clusters([3, 4], [3]);
-        assert.equal(more_x.length, 1);
-        assert.equal(more_x[0].group.length, 2);
-
-        var id_x = kmeans.means_clusters([3, 4], [3, 4]);
-        assert.equal(id_x.length, 2);
-        assert.equal(id_x[0].group.length, 1);
-        assert.equal(id_x[1].group.length, 1);
+        assert.equal(more_means[0], 3);
     });
+
+    it('can use the val accessor and make mean groups from means', function() {
+        var more_means = kmeans.means_clusters([{x: 3}], [{x: 3}, {x: 4}],
+            function(d) {
+                return d.x;
+            });
+        assert.equal(more_means.length, 1);
+        assert.equal(more_means[0][0].x, 3);
+    });
+
+    it('can make means from clusters', function() {
+        var more_means = kmeans.means_clusters([3], [3, 4]);
+        assert.equal(more_means.length, 1);
+        var n = kmeans.clusters_means(more_means);
+        assert.equal(n[0], 3);
+    });
+
 });

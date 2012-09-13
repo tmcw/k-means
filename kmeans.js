@@ -64,7 +64,7 @@ function clusters_means(clusters, average, val) {
     if (!average) average = average1d;
     if (!val) val = identity;
     var newmeans = [];
-    for (i = 0; i < clusters.length; i++) {
+    for (var i = 0; i < clusters.length; i++) {
         var centroid = average(clusters[i], val);
         newmeans.push(centroid);
     }
