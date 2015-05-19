@@ -1,4 +1,4 @@
-## k-means
+## k-means-cluster
 
 [k-means clustering](http://en.wikipedia.org/wiki/K-means)
 in configurable dimensions, in-browser and with node.js.
@@ -8,7 +8,7 @@ this library is split into very small bits, so you can use each
 step separately.
 
 ```javascript
-var kmeans = require('kmeans');
+var kmeans = require('k-means-cluster');
 
 var d = [1, 2, 3];
 // take a random sample of the array d
@@ -35,7 +35,7 @@ console.log(c.length);
 
 ## Usage
 
-    npm install --save kmeans
+    npm install --save k-means-cluster
 
 ## Testing
 
