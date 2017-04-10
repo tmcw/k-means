@@ -1,5 +1,7 @@
 ## k-means-cluster
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/tmcw/k-means.svg)](https://greenkeeper.io/)
+
 [k-means clustering](http://en.wikipedia.org/wiki/K-means)
 in configurable dimensions, in-browser and with node.js.
 
