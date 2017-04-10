@@ -17,7 +17,7 @@
     "math"
   ],
   "devDependencies": {
-    "mocha": "1.2.x"
+    "mocha": "~3.2.0"
   },
   "scripts": {
     "test": "mocha -R spec"
